@@ -11,6 +11,7 @@ import com.dugeun.dugeunbackend.domain.professor.Major;
 import com.dugeun.dugeunbackend.domain.professor.Professor;
 import com.dugeun.dugeunbackend.domain.professor.ProfessorService;
 import com.dugeun.dugeunbackend.domain.professor.ability.Ability;
+import com.dugeun.dugeunbackend.domain.professor.ability.AbilityRepository;
 import com.dugeun.dugeunbackend.domain.professor.ability.AbilityService;
 import com.dugeun.dugeunbackend.domain.professor.comment.Comment;
 import com.dugeun.dugeunbackend.domain.professor.comment.CommentService;
@@ -30,6 +31,7 @@ public class ApiProfessorService {
 
     private final ProfessorService professorService;
     private final AbilityService abilityService;
+    private final AbilityRepository abilityRepository;
     private final CommentService commentService;
 
     @Transactional
@@ -60,7 +62,7 @@ public class ApiProfessorService {
         Professor professor = professorService.findByIdFetchComment(id);
 
         // 통계 쿼리를 실행해 Dto에 담는다.
-        AbilityListDto avgAbilityDto = abilityService.findAvgByProfessorId(id);
+        AbilityListDto avgAbilityDto = findAvgByProfessorId(id);
         // 담긴 자료를 바탕으로 Rating을 산출한다.
         Integer sum = avgAbilityDto.getSum(); // rating을 제외한 값의 합
         int rating = (int) Math.round(sum / 5.0 / 20.0);
@@ -96,6 +98,10 @@ public class ApiProfessorService {
                 .build();
 
         commentService.save(comment);
+    }
+
+    private AbilityListDto findAvgByProfessorId(Long id) {
+        return abilityRepository.findAvgByProfessorId(id);
     }
 }
 

@@ -1,7 +1,17 @@
 server:
-  port: 8080
+  port: 443
+  ssl:
+    enabled: true
+    protocol: TLS
+    key-store: keypairpair.jks
+    key-store-type: PKCS12
+    key-store-password: pairpair
+    key-alias: keypairpair
+    enabled-protocols:
+      TLSv1.1, 
+      TLSv1.2
   servlet:
-    context-path: /
+    context-path:
 
 spring:
   mvc:
