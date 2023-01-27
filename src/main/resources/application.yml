@@ -3,7 +3,7 @@ server:
   ssl:
     enabled: true
     protocol: TLS
-    key-store: keypairpair.jks
+    key-store: Team7-DoGeunDoGeun_Professor_Asssessment/keypairpair.jks
     key-store-type: PKCS12
     key-store-password: pairpair
     key-alias: keypairpair
