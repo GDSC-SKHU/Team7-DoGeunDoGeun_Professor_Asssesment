@@ -1,7 +1,9 @@
 package com.dugeun.dugeunbackend.global;
 
+import com.dugeun.dugeunbackend.global.converter.MajorConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -19,16 +21,13 @@ public class WebConfig implements WebMvcConfigurer {
                 );
     }
 
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new MajorConverter());
+    }
+
+
 }
-
-
-
-
-
-
-
-
-
 
 
 

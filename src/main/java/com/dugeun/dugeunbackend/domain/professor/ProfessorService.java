@@ -23,10 +23,16 @@ public class ProfessorService {
         return professorRepository.findAll();
     }
 
+    public List<Professor> findAllByMajor(Major major) {
+        return professorRepository.findAllByMajor(major);
+    }
+
     public Professor findById(Long id) {
         return professorRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("id 잘못 입력했어요 교수를 찾을수가 없어요"));
     }
+
+
 }
 
 

@@ -7,6 +7,7 @@ import com.dugeun.dugeunbackend.api.common.dto.SingleRspsTemplate;
 import com.dugeun.dugeunbackend.api.professor.dto.AddAssessmentDto;
 import com.dugeun.dugeunbackend.api.professor.dto.MainPageProfessorDto;
 import com.dugeun.dugeunbackend.api.professor.dto.ProfessorDetailDto;
+import com.dugeun.dugeunbackend.domain.professor.Major;
 import com.dugeun.dugeunbackend.domain.professor.Professor;
 import com.dugeun.dugeunbackend.domain.professor.ProfessorService;
 import com.dugeun.dugeunbackend.domain.professor.ability.Ability;
@@ -30,8 +31,14 @@ public class ApiProfessorService {
     private final CommentService commentService;
 
     @Transactional
-    public RspsTemplate<MainPageProfessorDto> findAll() {
-        List<Professor> professors = professorService.findAll();
+    public RspsTemplate<MainPageProfessorDto> findAllByMajor(Major major) {
+        List<Professor> professors;
+        if (major == null){
+            professors = professorService.findAll();
+        } else {
+            professors = professorService.findAllByMajor(major);
+        }
+
 
         List<MainPageProfessorDto> mainPageProfessorDtos = MainPageProfessorDto.ofList(professors);
 

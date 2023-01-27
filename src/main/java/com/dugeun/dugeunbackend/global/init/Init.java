@@ -7,11 +7,14 @@ import com.dugeun.dugeunbackend.domain.professor.ability.Ability;
 import com.dugeun.dugeunbackend.domain.professor.ability.AbilityService;
 import com.dugeun.dugeunbackend.domain.professor.comment.Comment;
 import com.dugeun.dugeunbackend.domain.professor.comment.CommentService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -21,20 +24,50 @@ public class Init {
     private final AbilityService abilityService;
     private final CommentService commentService;
 
+    @Getter
+    static class ProfessorAndName{
+        private String name;
+        private Major major;
+
+        public ProfessorAndName(String name, Major major) {
+            this.name = name;
+            this.major = major;
+        }
+    }
+
     @Transactional
     @PostConstruct
     public void init(){
-        String[] professorNames = new String[]{"이상윤", "이승진", "김덕봉", "정연식", "김명철", "홍은지", "유상신"
-                , "노은하", "김태우", "박정식", "이하규", "정인철", "이종현", "홍성준", "임충규", "김학수"};
+        List<ProfessorAndName> professorAndNames = new ArrayList<>();
+        professorAndNames.add(new ProfessorAndName("이상윤", Major.AI));
+        professorAndNames.add(new ProfessorAndName("이승진", Major.SOFT));
+        professorAndNames.add(new ProfessorAndName("김덕봉", Major.CE));
+        professorAndNames.add(new ProfessorAndName("정연식", Major.CE));
+        professorAndNames.add(new ProfessorAndName("김명철", Major.SOFT));
+        professorAndNames.add(new ProfessorAndName("홍은지", Major.SOFT));
+        professorAndNames.add(new ProfessorAndName("유상신", Major.SOFT));
+        professorAndNames.add(new ProfessorAndName("노은하", Major.SOFT));
+        professorAndNames.add(new ProfessorAndName("김태우", Major.CE));
+        professorAndNames.add(new ProfessorAndName("박정식", Major.CE));
+        professorAndNames.add(new ProfessorAndName("이하규", Major.CE));
+        professorAndNames.add(new ProfessorAndName("정인철", Major.CE));
+        professorAndNames.add(new ProfessorAndName("이종현", Major.CE));
+        professorAndNames.add(new ProfessorAndName("홍성준", Major.AI));
+        professorAndNames.add(new ProfessorAndName("임충규", Major.CE));
+        professorAndNames.add(new ProfessorAndName("김학수", Major.CE));
 
-        for (String professorName : professorNames) {
+
+//        String[] professorNames = new String[]{"이상윤", "이승진", "김덕봉", "정연식", "김명철", "홍은지", "유상신"
+//                , "노은하", "김태우", "박정식", "이하규", "정인철", "이종현", "홍성준", "임충규", "김학수"};
+        for (ProfessorAndName pNa : professorAndNames) {
             Professor professor = Professor.builder()
-                    .professorName(professorName)
-                    .major(Major.SOFT)
+                    .professorName(pNa.getName())
+                    .major(pNa.getMajor())
                     .build();
 
 
             professorService.save(professor);
+
             Ability ability1 = Ability.builder()
                     .professor(professor)
                     .assignment(100)
@@ -66,6 +99,7 @@ public class Init {
             commentService.save(comment2);
         }
     }
+
 
 }
 

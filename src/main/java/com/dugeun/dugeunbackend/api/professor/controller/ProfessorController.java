@@ -6,8 +6,7 @@ import com.dugeun.dugeunbackend.api.professor.dto.AddAssessmentDto;
 import com.dugeun.dugeunbackend.api.professor.dto.MainPageProfessorDto;
 import com.dugeun.dugeunbackend.api.professor.dto.ProfessorDetailDto;
 import com.dugeun.dugeunbackend.api.professor.service.ApiProfessorService;
-import com.dugeun.dugeunbackend.domain.professor.ProfessorService;
-import com.dugeun.dugeunbackend.domain.professor.ability.AbilityService;
+import com.dugeun.dugeunbackend.domain.professor.Major;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ProfessorController {
     private final ApiProfessorService apiProfessorService;
-    private final ProfessorService professorService;
-    private final AbilityService abilityService;
     @GetMapping("/hello")
     public String hello(){
         return "Hello";
@@ -26,9 +23,9 @@ public class ProfessorController {
 
     @GetMapping("/")
     @Transactional
-    public ResponseEntity<RspsTemplate<MainPageProfessorDto>> mainPage(){
+    public ResponseEntity<RspsTemplate<MainPageProfessorDto>> mainPage(@RequestParam(required = false) Major major){
 
-        RspsTemplate<MainPageProfessorDto> response = apiProfessorService.findAll();
+        RspsTemplate<MainPageProfessorDto> response = apiProfessorService.findAllByMajor(major);
         return ResponseEntity.ok(response);
     }
 
