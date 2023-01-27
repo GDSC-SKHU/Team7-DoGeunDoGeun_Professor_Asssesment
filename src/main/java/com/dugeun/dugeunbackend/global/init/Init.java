@@ -5,6 +5,8 @@ import com.dugeun.dugeunbackend.domain.professor.Professor;
 import com.dugeun.dugeunbackend.domain.professor.ProfessorService;
 import com.dugeun.dugeunbackend.domain.professor.ability.Ability;
 import com.dugeun.dugeunbackend.domain.professor.ability.AbilityService;
+import com.dugeun.dugeunbackend.domain.professor.comment.Comment;
+import com.dugeun.dugeunbackend.domain.professor.comment.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ public class Init {
 
     private final ProfessorService professorService;
     private final AbilityService abilityService;
+    private final CommentService commentService;
 
     @Transactional
     @PostConstruct
@@ -48,9 +51,19 @@ public class Init {
                     .sensibility(10)
                     .teaching(10)
                     .build();
-
             abilityService.save(ability1);
             abilityService.save(ability2);
+
+            Comment comment1 = Comment.builder()
+                    .content("안아줘요")
+                    .professor(professor)
+                    .build();
+            Comment comment2 = Comment.builder()
+                    .content("안아달라니까요")
+                    .professor(professor)
+                    .build();
+            commentService.save(comment1);
+            commentService.save(comment2);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.dugeun.dugeunbackend.api.professor.service;
 
 import com.dugeun.dugeunbackend.api.ability.dto.AbilityListDto;
+import com.dugeun.dugeunbackend.api.comment.dto.CommentListDto;
 import com.dugeun.dugeunbackend.api.common.dto.RspsTemplate;
 import com.dugeun.dugeunbackend.api.common.dto.SingleRspsTemplate;
 import com.dugeun.dugeunbackend.api.professor.dto.MainPageProfessorDto;
@@ -42,11 +43,15 @@ public class ApiProfessorService {
         Professor professor = professorService.findById(id);
         List<Ability> abilities = professor.getAbility();
 
+        List<CommentListDto> commentListDtos = CommentListDto.ofList(professor.getComments());
+
         AbilityListDto avgAbilityDto = AbilityListDto.getAvg(abilities);
+
         ProfessorDetailDto professorDetailDto = ProfessorDetailDto.builder()
                 .professorName(professor.getProfessorName())
                 .major(professor.getMajor())
                 .ability(avgAbilityDto)
+                .comments(commentListDtos)
                 .build();
 
         return SingleRspsTemplate.<ProfessorDetailDto>builder()
