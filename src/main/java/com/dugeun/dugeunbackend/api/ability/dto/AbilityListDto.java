@@ -18,16 +18,7 @@ public class AbilityListDto {
     private Double temperature = 36.5;
     private Integer humanity; // 인간미
     private Integer sensibility; // 감수성
-
-    public static AbilityListDto of(Ability ability) {
-        return AbilityListDto.builder()
-                .assignment(ability.getAssignment())
-                .kindness(ability.getKindness())
-                .teaching(ability.getTeaching())
-                .humanity(ability.getHumanity())
-                .sensibility(ability.getSensibility())
-                .build();
-    }
+    private Integer rating;
 
     public static AbilityListDto getAvg(List<Ability> abilities){
         // jqpl avg 집계함수
@@ -56,14 +47,31 @@ public class AbilityListDto {
                 .average()
                 .getAsDouble();
 
+        double sum = avgAssignment + avgKindness + avgTeaching + avgHumanity + avgSensibility;
+
+        String stringRating = String.format("%.0f", sum / 5 / 20);
+        Integer rating = Integer.valueOf(stringRating);
+
         return AbilityListDto.builder()
                 .assignment(avgAssignment.intValue())
                 .kindness(avgKindness.intValue())
                 .teaching(avgTeaching.intValue())
                 .humanity(avgHumanity.intValue())
                 .sensibility(avgSensibility.intValue())
+                .rating(rating)
                 .build();
     }
+
+    public static AbilityListDto of(Ability ability) {
+        return AbilityListDto.builder()
+                .assignment(ability.getAssignment())
+                .kindness(ability.getKindness())
+                .teaching(ability.getTeaching())
+                .humanity(ability.getHumanity())
+                .sensibility(ability.getSensibility())
+                .build();
+    }
+
     public static List<AbilityListDto> ofList(List<Ability> abilities){
         return abilities.stream()
                 .map(ability -> AbilityListDto.of(ability))
@@ -71,11 +79,12 @@ public class AbilityListDto {
     }
 
     @Builder
-    public AbilityListDto(Integer assignment, Integer kindness, Integer teaching, Integer humanity, Integer sensibility) {
+    public AbilityListDto(Integer assignment, Integer kindness, Integer teaching, Integer humanity, Integer sensibility, Integer rating) {
         this.assignment = assignment;
         this.kindness = kindness;
         this.teaching = teaching;
         this.humanity = humanity;
         this.sensibility = sensibility;
+        this.rating = rating;
     }
 }
