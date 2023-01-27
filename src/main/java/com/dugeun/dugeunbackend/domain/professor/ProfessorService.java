@@ -22,6 +22,11 @@ public class ProfessorService {
     public List<Professor> findAll() {
         return professorRepository.findAll();
     }
+
+    public Professor findById(Long id) {
+        return professorRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("id 잘못 입력했어요 교수를 찾을수가 없어요"));
+    }
 }
 
 

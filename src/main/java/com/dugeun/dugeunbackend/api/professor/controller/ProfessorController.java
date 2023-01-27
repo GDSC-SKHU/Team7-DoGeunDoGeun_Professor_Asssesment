@@ -1,7 +1,9 @@
 package com.dugeun.dugeunbackend.api.professor.controller;
 
 import com.dugeun.dugeunbackend.api.common.dto.RspsTemplate;
+import com.dugeun.dugeunbackend.api.common.dto.SingleRspsTemplate;
 import com.dugeun.dugeunbackend.api.professor.dto.MainPageProfessorDto;
+import com.dugeun.dugeunbackend.api.professor.dto.ProfessorDetailDto;
 import com.dugeun.dugeunbackend.api.professor.service.ApiProfessorService;
 import com.dugeun.dugeunbackend.domain.professor.ProfessorService;
 import lombok.RequiredArgsConstructor;
@@ -30,11 +32,11 @@ public class ProfessorController {
     }
 
     @GetMapping("/professor/{id}")
-    public ResponseEntity<RspsTemplate> getDetail(@PathVariable Long id){
+    public ResponseEntity<SingleRspsTemplate<ProfessorDetailDto>> getDetail(@PathVariable Long id){
 
         // id로 조회, 교수의 능력치를 담은 detailDto 반환
-
-        return null;
+        SingleRspsTemplate<ProfessorDetailDto> response = apiProfessorService.findById(id);
+        return ResponseEntity.ok(response);
     }
 
 
