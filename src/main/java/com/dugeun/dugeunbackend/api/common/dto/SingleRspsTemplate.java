@@ -10,7 +10,6 @@ public class SingleRspsTemplate<T> {
     private int status;
     private T data;
 
-
     @Builder
     public SingleRspsTemplate(int status, T data) {
         this.status = status;

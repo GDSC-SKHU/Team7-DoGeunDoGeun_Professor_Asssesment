@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -39,7 +41,6 @@ public class ApiProfessorService {
             professors = professorService.findAllByMajor(major);
         }
 
-
         List<MainPageProfessorDto> mainPageProfessorDtos = MainPageProfessorDto.ofList(professors);
 
         RspsTemplate<MainPageProfessorDto> response = RspsTemplate.<MainPageProfessorDto>builder()
@@ -52,13 +53,20 @@ public class ApiProfessorService {
 
     @Transactional
     public SingleRspsTemplate<ProfessorDetailDto> findDetailById(Long id) {
+        System.out.println("============시작===========");
+        Instant start = Instant.now();
+
         // id로 조회, 교수의 능력치를 담은 detailDto 반환
-        Professor professor = professorService.findById(id);
-        List<Ability> abilities = professor.getAbility();
+        Professor professor = professorService.findByIdFetchComment(id);
+
+        // 통계 쿼리를 실행해 Dto에 담는다.
+        AbilityListDto avgAbilityDto = abilityService.findAvgByProfessorId(id);
+        // 담긴 자료를 바탕으로 Rating을 산출한다.
+        Integer sum = avgAbilityDto.getSum(); // rating을 제외한 값의 합
+        int rating = (int) Math.round(sum / 5.0 / 20.0);
+        avgAbilityDto.setRating(rating); // rating은 정수로 변환
 
         List<CommentListDto> commentListDtos = CommentListDto.ofList(professor.getComments());
-
-        AbilityListDto avgAbilityDto = AbilityListDto.getAvg(abilities);
 
         ProfessorDetailDto professorDetailDto = ProfessorDetailDto.builder()
                 .professorName(professor.getProfessorName())
@@ -66,7 +74,9 @@ public class ApiProfessorService {
                 .ability(avgAbilityDto)
                 .comments(commentListDtos)
                 .build();
+        Instant end = Instant.now();
 
+        System.out.println("수행시간: " + Duration.between(start, end).toMillis() + " ms");
         return SingleRspsTemplate.<ProfessorDetailDto>builder()
                 .status(HttpStatus.OK.value())
                 .data(professorDetailDto)

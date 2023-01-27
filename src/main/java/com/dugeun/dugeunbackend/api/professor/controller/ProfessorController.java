@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class ProfessorController {
@@ -38,7 +40,7 @@ public class ProfessorController {
     }
 
     @PostMapping("/professors/{id}/assessment")
-    public ResponseEntity addComment(@PathVariable Long id, @RequestBody AddAssessmentDto addAssessmentDto){
+    public ResponseEntity addComment(@PathVariable Long id, @Valid @RequestBody AddAssessmentDto addAssessmentDto){
         // 뭘 받아야 하지
         // 댓글내용, 능력치 5가지 , @PathVar professorId
         apiProfessorService.addAssessment(id, addAssessmentDto);

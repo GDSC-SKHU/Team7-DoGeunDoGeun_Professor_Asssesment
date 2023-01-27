@@ -32,6 +32,11 @@ public class ProfessorService {
                 .orElseThrow(() -> new IllegalArgumentException("id 잘못 입력했어요 교수를 찾을수가 없어요"));
     }
 
+    public Professor findByIdFetchComment(Long id) {
+        return professorRepository.findByIdFetchComment(id)
+                .orElseThrow(() -> new IllegalArgumentException("id 잘못 입력했어요 교수를 찾을수가 없어요"));
+    }
+
 
 }
 

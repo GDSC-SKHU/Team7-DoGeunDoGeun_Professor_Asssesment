@@ -11,12 +11,10 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
-public class MainPageProfessorDto {
-
+public class MainPageProfessorDto{
     private Long id;
     private String professorName;
     private Major major;
-
     @Builder
     public MainPageProfessorDto(Long id, String professorName, Major major) {
         this.id = id;
