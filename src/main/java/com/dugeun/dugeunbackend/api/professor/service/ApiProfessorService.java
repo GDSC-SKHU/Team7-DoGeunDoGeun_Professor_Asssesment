@@ -100,7 +100,8 @@ public class ApiProfessorService {
         commentService.save(comment);
     }
 
-    private AbilityListDto findAvgByProfessorId(Long id) {
+    // DTO를 반환하므로 API패키지에서 Repository 접근
+    public AbilityListDto findAvgByProfessorId(Long id) {
         return abilityRepository.findAvgByProfessorId(id);
     }
 }
